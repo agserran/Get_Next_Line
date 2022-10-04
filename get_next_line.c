@@ -20,6 +20,8 @@ static char	*stasher(int fd, char *stash)
 	readd = 1;
 	if (!stash)
 		stash = ft_calloc(sizeof(char), 1);
+	if (!stash)
+		return (NULL);
 	buf = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
 	if (!buf)
 		return (NULL);
@@ -36,6 +38,10 @@ static char	*stasher(int fd, char *stash)
 		stash = ft_strjoin(stash, buf);
 	}
 	free(buf);
+	if (stash[0] == '\0')
+		return (NULL);
+	if (stash[0] == '\n')
+		return ("");
 	return (stash);
 }
 
@@ -54,7 +60,7 @@ static char	*get_line(char *stash)
 		line[i] = stash[i];
 		i++;
 	}
-	if (stash[i] != '\n' && stash[i])
+	if (stash[i] == '\n' && stash[i])
 		line[i] = stash[i];
 	return (line);
 }
@@ -84,7 +90,7 @@ char	*get_next_line(int fd)
 	static char	*stash[FD_SETSIZE];
 	char		*buf;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd <= 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	stash[fd] = stasher(fd, stash[fd]);
 	if (!stash[fd])
@@ -94,10 +100,10 @@ char	*get_next_line(int fd)
 	return (buf);
 }
 
-int main(void){
+/*int main(void){
 
 	int fd;
 	fd = open("/Users/agserran/CURSUS/Get_Next_Line/Get_Next_Line/mifichero", O_RDONLY);
 	printf("%s", get_next_line(fd));
 	return 0;
-}
+}*/
