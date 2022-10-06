@@ -53,13 +53,27 @@ void	*ft_calloc(size_t size, size_t count)
 	return (memory);
 }
 
-char	*ft_strchr(const char *s, int c)
+char	*ft_strchr2(const char *s)
 {
 	if (!s)
 		return (NULL);
 	while (*s)
 	{
-		if (*s == (unsigned char)c)
+		if (*s == '\n')
+			return ((char *)s);
+		s++;
+	}
+	if (*s == '\0')
+		return ((char *)s);
+	return (NULL);
+}
+char	*ft_strchr(const char *s, int c)
+{
+	if (s == '\0')
+		return (NULL);
+	while (*s != '\0')
+	{
+		if (*s == (unsigned char) c)
 			return ((char *)s);
 		s++;
 	}
@@ -68,7 +82,7 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin2(char const *s1, char const *s2)
 {
 	size_t	c;
 	size_t	c2;
@@ -94,5 +108,39 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		c++;
 		s2++;
 	}
+	free((char *)s1);
+	//printf("memory [%s]\n", memory);
 	return (memory);
+}
+
+char	*ft_strjoin(char *stash, char *buffer)
+{
+	char	*str;
+	int		i;
+	int		j;
+	int		total;
+
+	total = ft_strlen(stash) + ft_strlen(buffer);
+	str = ft_calloc(sizeof(char), (total + 1));
+	if (!str || !stash || !buffer)
+		return (NULL);
+	i = 0;
+	while (stash[i])
+	{
+		str[i] = stash[i];
+		i++;
+	}
+	j = 0;
+	while (buffer[j])
+	{
+		str[i] = buffer[j];
+		i++;
+		j++;
+	}
+	free(stash);
+	return (str);
+}
+
+void ft_leaks(void){
+	system("leaks a.out");
 }
