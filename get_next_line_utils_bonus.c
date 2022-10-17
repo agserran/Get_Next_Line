@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 void	ft_bzero(void *s, size_t n)
 {
@@ -58,14 +58,14 @@ char	*ft_strchr(const char *s, int c)
 {
 	if (s == '\0')
 		return (NULL);
+	if (c == '\0')
+		return ((char *)s);
 	while (*s != '\0')
 	{
 		if (*s == (unsigned char) c)
 			return ((char *)s);
 		s++;
 	}
-	if (c == '\0')
-		return ((char *)s);
 	return (NULL);
 }
 

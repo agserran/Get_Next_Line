@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*stasher(int fd, char *stash)
 {
@@ -34,11 +34,6 @@ static char	*stasher(int fd, char *stash)
 		stash = ft_strjoin(stash, buf);
 	}
 	free(buf);
-	if (stash[0] == '\0')
-	{
-		free(stash);
-		return(NULL);
-	}
 	return (stash);
 }
 
@@ -79,7 +74,7 @@ static char	*clearstash(char *stash)
 		free(stash);
 		return (NULL);
 	}
-	memory = (char *) ft_calloc(sizeof(char), ft_strlen(stash) - i + 1);
+	memory = (char *)ft_calloc(sizeof(char), ft_strlen(stash) - i + 1);
 	if (!memory)
 		return (NULL);
 	i++;
@@ -108,28 +103,4 @@ char	*get_next_line(int fd)
 	stash[fd] = clearstash(stash[fd]);
 
 	return (buf);
-}
-
-int main(void){
-
-	int fd;
-	char *line;
-
-	fd = open("./gnlTester/files/41_no_nl", O_RDONLY);
-	fd = open("./mifichero", O_RDONLY);
-	while (line)
-	{
-		line = get_next_line(fd);
-		if (line != NULL)
-			printf("%s", line);
-		free(line);
-	}
-
-	line = get_next_line(fd);
-	printf("%s", line);
-	free(line);
-	close(fd);
-	system("leaks a.out");
-
-	return 0;
 }
