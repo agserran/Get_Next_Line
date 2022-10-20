@@ -23,9 +23,11 @@ static char	*stasher(int fd, char *stash)
 	buf = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
 	if (!buf)
 		return (NULL);
-	while (!ft_strchr(buf, '\n') && readed != 0) {
+	while (!ft_strchr(buf, '\n') && readed != 0)
+	{
 		readed = read(fd, buf, BUFFER_SIZE);
-		if (readed == -1) {
+		if (readed == -1)
+		{
 			free(buf);
 			free(stash);
 			return (NULL);
@@ -34,7 +36,9 @@ static char	*stasher(int fd, char *stash)
 		stash = ft_strjoin(stash, buf);
 	}
 	free(buf);
-	return (stash);
+	if (checker(&stash))
+		return (stash);
+	return (NULL);
 }
 
 static char	*get_line(char *stash)
@@ -43,7 +47,7 @@ static char	*get_line(char *stash)
 	int		i;
 
 	i = 0;
-	while (stash[i] != '\n')
+	while (stash[i] != '\n' && stash[i] != '\0')
 		i++;
 	line = (char *)ft_calloc(sizeof(char), i + 2);
 	if (!line)
@@ -93,14 +97,12 @@ char	*get_next_line(int fd)
 	static char	*stash[FD_SETSIZE];
 	char		*buf;
 
-	if (fd <= 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	stash[fd] = stasher(fd, stash[fd]);
-	//printf("%s", stash[fd]);
 	if (!stash[fd])
 		return (NULL);
 	buf = get_line(stash[fd]);
 	stash[fd] = clearstash(stash[fd]);
-
 	return (buf);
 }

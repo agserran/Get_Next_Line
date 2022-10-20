@@ -12,18 +12,14 @@
 
 #include "get_next_line_bonus.h"
 
-void	ft_bzero(void *s, size_t n)
+char	**checker(char **str)
 {
-	char	*str;
-	size_t	i;
-
-	i = 0;
-	str = (char *)s;
-	while (i < n)
+	if (*str[0] == '\0')
 	{
-		str[i] = '\0';
-		i++;
+		free(*str);
+		return (NULL);
 	}
+	return (str);
 }
 
 size_t	ft_strlen(const char *s)
@@ -39,32 +35,31 @@ size_t	ft_strlen(const char *s)
 void	*ft_calloc(size_t size, size_t count)
 {
 	char	*memory;
-	size_t	i;
 	size_t	p;
+	size_t	i;
 
-	p = count * size;
 	i = 0;
+	p = count * size;
 	if ((p < count) || (p < size))
 		return (NULL);
 	memory = malloc(count * size);
 	if (!memory)
 		return (NULL);
-	ft_bzero(memory, count * size);
+	while (i < count * size)
+		memory[i++] = '\0';
 	return (memory);
 }
 
-
-char	*ft_strchr(const char *s, int c)
+char	*ft_strchr(char *s, int c)
 {
-	if (s == '\0')
-		return (NULL);
-	if (c == '\0')
-		return ((char *)s);
-	while (*s != '\0')
+	int	i;
+
+	i = 0;
+	while (s[i] != 0)
 	{
-		if (*s == (unsigned char) c)
-			return ((char *)s);
-		s++;
+		if (s[i] == (char)c)
+			return (&s[i]);
+		i++;
 	}
 	return (NULL);
 }
